@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자유 게시판</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>📢 자유 게시판</h1>
+    
+    <form action="/" method="GET" style="text-align: right; margin-bottom: 10px;">
+        <input type="text" name="search" placeholder="제목 검색" value="<%= keyword %>">
+        <button type="submit">검색</button>
+    </form>
+
+    <table border ="1" width="100%">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <tr>
+                        <td><%= post.id %></td>
+                        <td><a href="/post/<%= post.id %>"><%= post.title %></a></td>
+                        <td><%= post.author %></td>
+                        <td><%= post.views %></td>
+                        <td><%= new Date(post.created_at).toLocaleDateString() %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="5">게시글이 없습니다.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <% for(let i = 1; i <= totalPages; i++) { %>
+            <a href="/?page=<%= i %>&search=<%= keyword %>" 
+               style = <"<%= page === i ? 'font-weight:bold; color:red;' : '' %>"></a>
+               [<%= i %>]
+            </a>
+        <% } %>
+    </div>
+
+    <a href="/write"><button>글쓰기</button></a>
+</body>
+</html>
